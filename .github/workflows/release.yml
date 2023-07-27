@@ -66,8 +66,8 @@ jobs:
         uses: actions/download-artifact@v3
       - run: |
           ls
-          cat 1.txt
-          cat 2.txt
+          cat txt1/1.txt
+          cat txt2/2.txt
       - name: release
         id: release
         uses: "marvinpinto/action-automatic-releases@latest"
@@ -77,4 +77,4 @@ jobs:
           prerelease: false
           title: "${{ github.ref_name }}" # kentxxq.Cli是tag构建,所以输出的是tag名称
           files: |
-            2.txt
+            txt2/2.txt
