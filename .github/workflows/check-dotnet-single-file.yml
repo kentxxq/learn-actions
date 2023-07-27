@@ -1,0 +1,98 @@
+name: check-net6-single-file
+on: [push]
+jobs:
+  linux-x64-dotnet8-StripSymbols:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: setup dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "8"
+          include-prerelease: true
+
+      - name: command
+        run: |
+          dotnet new console --name hello-world -f net8.0
+          cd hello-world
+          cat hello-world.csproj
+          dotnet publish -r linux-x64 -c Release -p:PublishTrimmed=true -p:PublishAot=true -p:StripSymbols=true --self-contained
+          ls -lh bin/Release/net8.0/linux-x64/publish/hello-world
+
+  linux-x64-dotnet7-StripSymbols:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: setup dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "7"
+          include-prerelease: true
+
+      - name: command
+        run: |
+          dotnet new console --name hello-world -f net7.0
+          cd hello-world
+          cat hello-world.csproj
+          dotnet publish -r linux-x64 -c Release -p:PublishTrimmed=true -p:PublishAot=true -p:StripSymbols=true --self-contained
+          ls -lh bin/Release/net7.0/linux-x64/publish/hello-world
+
+  linux-x64-dotnet6:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: setup dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "6"
+
+      - name: command
+        run: |
+          dotnet new console --name hello-world -f net6.0
+          cd hello-world
+          dotnet publish -r linux-x64 -c Release -p:PublishSingleFile=true -p:PublishTrimmed=true --self-contained true
+          ls -lh bin/Release/net6.0/linux-x64/publish/hello-world
+
+  linux-x64-dotnet7:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: setup dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "7"
+          include-prerelease: true
+
+      - name: command
+        run: |
+          dotnet new console --name hello-world -f net7.0
+          cd hello-world
+          dotnet publish -r linux-x64 -c Release -p:PublishSingleFile=true -p:PublishTrimmed=true --self-contained true
+          ls -lh bin/Release/net7.0/linux-x64/publish/hello-world
+
+  win-x64-dotnet7:
+    runs-on: windows-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: setup dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "7"
+          include-prerelease: true
+
+      - name: command
+        run: |
+          dotnet new console --name hello-world -f net7.0
+          cd hello-world
+          dotnet publish -r win-x64 -c Release -p:PublishSingleFile=true -p:PublishTrimmed=true --self-contained true
+          ls bin\Release\net7.0\win-x64\publish\

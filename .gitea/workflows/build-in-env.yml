@@ -1,0 +1,24 @@
+name: build-in env
+on:
+  # gitea无法手动触发
+  # workflow_dispatch:
+  push:
+
+jobs:
+  build-in-env:
+    runs-on: ubuntu-latest
+    steps:
+      # 所有的内置对象示例 https://docs.github.com/en/actions/learn-github-actions/contexts#example-contents-of-the-github-context
+      - run: echo ${{ github.event_name }}
+      - run: echo ${{ runner.os }}
+      - run: echo ${{ github.ref }}
+      - run: echo ${{ github.repository }}
+      - run: echo ${{ github.workspace }}
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
+      - run: echo ${{ job.status }}
+      - run: echo ${{ github.api_url }}
+      - run: echo ${{ github.server_url }}
+      - run: echo ${{ github.base_ref	 }}
+      - run: sleep 2

@@ -1,0 +1,21 @@
+name: cache
+on:
+  push:
+
+jobs:
+  a:
+    runs-on: ubuntu-latest
+    steps:
+      - name: cache 1.txt
+        id: cache1
+        uses: actions/cache@v3
+        with:
+          path: 1.txt
+          key: 1.txt
+
+      - name: build 1.txt
+        if: steps.cache1.outputs.cache-hit != 'true'
+        run: |
+          touch 1.txt
+          echo 1 > 1.txt
+          echo 1.txt创建完成

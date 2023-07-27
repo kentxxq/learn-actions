@@ -1,0 +1,79 @@
+name: release
+on:
+  # gitea无法手动触发
+  # workflow_dispatch:
+  push:
+
+jobs:
+  build-1:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          touch 1.txt
+          echo 1 > 1.txt
+      - name: upload txt1
+        uses: actions/upload-artifact@v3
+        with:
+          name: txt1
+          path: 1.txt
+
+  build-2:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          touch 2.txt
+          echo 2 > 2.txt
+      - name: upload txt2
+        uses: actions/upload-artifact@v3
+        with:
+          name: txt2
+          path: 2.txt
+
+  test-release-gitea:
+    runs-on: ubuntu-latest
+    # gitea 必须要tag,否则无法工作,同时避免在github上运行
+    # if: ${{ startsWith(github.ref, 'refs/tags/') && contains(github.server_url, '你的服务器地址,例如github.com') }}
+    if: ${{ startsWith(github.ref, 'refs/tags/') && contains(github.server_url, 'ken') }}
+    steps:
+      - name: download txt
+        uses: actions/download-artifact@v3
+        with:
+          name: txt1
+      - name: setup go
+        uses: actions/setup-go@v4
+        with:
+          go-version: ">=1.20.1"
+      - name: release
+        id: release1
+        uses: https://gitea.com/actions/release-action@main
+        with:
+          files: |-
+            txt1/1.txt
+          api_key: "${{secrets.RELEASE_TOKEN}}"
+
+  test-release-github:
+    runs-on: ubuntu-latest
+    # 打tag才运行,且避免在gitea上运行
+    if: ${{ startsWith(github.ref, 'refs/tags/') && contains(github.server_url, 'github') }}
+    steps:
+      # 下载特定artifact
+      # - name: download txt
+      #   uses: actions/download-artifact@v3
+      #   with:
+      #     name: txt2
+      - name: download txt
+        uses: actions/download-artifact@v3
+      - run: |
+          ls
+          cat 1.txt
+          cat 2.txt
+      - name: release
+        id: release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: false
+          title: "${{ github.ref_name }}" # kentxxq.Cli是tag构建,所以输出的是tag名称
+          files: |
+            artifact-txt2/2.txt

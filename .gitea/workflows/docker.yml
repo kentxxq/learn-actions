@@ -1,0 +1,12 @@
+name: docker
+on:
+  push:
+
+jobs:
+  test-docker:
+    runs-on: ubuntu-latest
+    container: catthehacker/ubuntu:act-latest
+    steps:
+      - name: check docker version
+        run: |
+          docker version
