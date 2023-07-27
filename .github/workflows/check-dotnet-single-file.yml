@@ -2,7 +2,6 @@ name: check-dotnet-single-file
 on:
   paths:
     - "./github/workflows/check-dotnet-single-file.yml"
-  workflow_dispatch:
 jobs:
   linux-x64-dotnet8-StripSymbols:
     runs-on: ubuntu-latest
