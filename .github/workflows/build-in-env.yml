@@ -1,7 +1,5 @@
 name: build-in env
 on:
-  # gitea无法手动触发
-  # workflow_dispatch:
   push:
 
 jobs:
