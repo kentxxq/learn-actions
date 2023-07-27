@@ -1,6 +1,7 @@
 name: build-in env
 on:
   push:
+  workflow_dispatch:
 
 jobs:
   build-in-env:

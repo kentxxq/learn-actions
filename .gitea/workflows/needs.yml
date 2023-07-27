@@ -1,6 +1,7 @@
 name: needs
 on:
   push:
+  workflow_dispatch:
 
 jobs:
   a:

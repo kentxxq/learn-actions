@@ -1,7 +1,8 @@
 name: check-dotnet-single-file
 on:
-  paths:
-    - "./gitea/workflows/check-dotnet-single-file.yml"
+  push:
+    paths:
+      - "**/workflows/check-dotnet-single-file.yml"
   workflow_dispatch:
 jobs:
   linux-x64-dotnet8-StripSymbols:
