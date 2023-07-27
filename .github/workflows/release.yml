@@ -75,4 +75,4 @@ jobs:
           prerelease: false
           title: "${{ github.ref_name }}" # kentxxq.Cli是tag构建,所以输出的是tag名称
           files: |
-            artifact-txt2/2.txt
+            2.txt
